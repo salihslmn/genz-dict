@@ -30,6 +30,25 @@ async def add(ctx, left: int, right: int):
     """Adds two numbers together."""
     await ctx.send(left + right)
 
+#yeni
+@bot.command()
+async def nasıl(ctx):
+    await ctx.send(f'bilmem')
+
+#yeni
+@bot.command()
+async def Multiply(ctx, left: int, right: int):
+    """Adds two numbers Multiply."""
+    await ctx.send(left * right)
+
+#yeni
+@bot.command()
+async def division(ctx, left: int, right: int):
+    """Adds two numbers division."""
+    await ctx.send(left / right)
+
+
+
 
 @bot.command()
 async def roll(ctx, dice: str):
