@@ -1,105 +1,127 @@
-# This example requires the 'members' and 'message_content' privileged intents to function.
-
 import discord
 from discord.ext import commands
+import os
 import random
+import requests
 
-description = """An example bot to showcase the discord.ext.commands extension
-module.
-
-There are a number of utility commands being showcased here."""
+print(os.listdir('images'))
 
 intents = discord.Intents.default()
-intents.members = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='$', description=description, intents=intents)
-
+bot = commands.Bot(command_prefix='$', intents=intents)
+img_name = random.choice(os.listdir('images'))
 
 @bot.event
 async def on_ready():
-    # Tell the type checker that User is filled up at this point
-    assert bot.user is not None
-
-    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
-    print('------')
-
+    print(f'{bot.user} olarak giriş yaptık')
 
 @bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
-
-#yeni
-@bot.command()
-async def nasıl(ctx):
-    await ctx.send(f'bilmem')
-
-#yeni
-@bot.command()
-async def Multiply(ctx, left: int, right: int):
-    """Adds two numbers Multiply."""
-    await ctx.send(left * right)
-
-#yeni
-@bot.command()
-async def division(ctx, left: int, right: int):
-    """Adds two numbers division."""
-    await ctx.send(left / right)
-
-
-
+async def hello(ctx):
+    await ctx.send(f'Merhaba! Ben {bot.user}, bir Discord sohbet botuyum!')
 
 @bot.command()
-async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await ctx.send('Format has to be in NdN!')
-        return
-
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await ctx.send(result)
-
-
-@bot.command(description='For when you wanna settle the score some other way')
-async def choose(ctx, *choices: str):
-    """Chooses between multiple choices."""
-    await ctx.send(random.choice(choices))
-
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
 
 @bot.command()
-async def repeat(ctx, times: int, content='repeating...'):
-    """Repeats a message multiple times."""
-    for i in range(times):
-        await ctx.send(content)
+async def mem(ctx):
+    img_name = random.choice(os.listdir('images'))
+    # Dosya adını bir değişkenden bu şekilde değiştirebilirsiniz!
+    with open(f'images/{img_name}', 'rb') as f:
+         picture = discord.File(f)
+    await ctx.send(file=picture)
+
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
 
 
-@bot.command()
-async def joined(ctx, member: discord.Member):
-    """Says when a member joined."""
-    # Joined at can be None in very bizarre cases so just handle that as well
-    if member.joined_at is None:
-        await ctx.send(f'{member} has no join date.')
-    else:
-        await ctx.send(f'{member} joined {discord.utils.format_dt(member.joined_at)}')
+@bot.command('duck')
+async def duck(ctx):
+    image_url = get_duck_image_url()
+    await ctx.send(image_url)
+
+def get_dog_image_url():    
+    url = 'https://random.dog/woof.json'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
 
 
-@bot.group()
-async def cool(ctx):
-    """Says if a user is cool.
+@bot.command('dog')
+async def dog(ctx):
+    image_url = get_dog_image_url()
+    await ctx.send(image_url)
+    
 
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await ctx.send(f'No, {ctx.subcommand_passed} is not cool')
-
-
-@cool.command(name='bot')
-async def _bot(ctx):
-    """Is the bot cool?"""
-    await ctx.send('Yes, the bot is cool.')
+def get_fox_image_url():    
+    url = 'https://randomfox.ca/floof/'
+    res = requests.get(url)
+    data = res.json()
+    return data['image']
 
 
-bot.run('MTQ2NzE4MzUzNTI1MjE4MTA0NQ.GlkbIl.Jo4Ovkdt1o8AlYfwpgqGFbbI5sYWpYyaACWMkk')
+@bot.command('fox')
+async def fox(ctx):
+    image_url = get_fox_image_url()
+    await ctx.send(image_url)
+
+def get_tokyo_anime_image_url():    
+    url = 'https://kitsu.io/api/edge/anime?filter[text]=tokyo'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+
+@bot.command('tokyo_anime')
+async def tokyo_anime(ctx):
+    image_url = get_tokyo_anime_image_url()
+    await ctx.send(image_url)
+
+
+def get_çevre_image_url():    
+    url = 'https://cevre.mersin.bel.tr/cevre-icin-neler-yapabiliriz/'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+@bot.command('çevre')
+async def çevre(ctx):
+    image_url = "https://cevre.mersin.bel.tr/cevre-icin-neler-yapabiliriz/"
+    await ctx.send(image_url)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bot.run("MTQ2NzE4MzUzNTI1MjE4MTA0NQ.GARVRG.vXMEcuikFSGfU_MLhK5StfHDI__1qMEiUxCjg8")
