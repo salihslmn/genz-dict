@@ -124,4 +124,4 @@ async def çevre(ctx):
 
 
 
-bot.run("MTQ2NzE4MzUzNTI1MjE4MTA0NQ.GARVRG.vXMEcuikFSGfU_MLhK5StfHDI__1qMEiUxCjg8")
+bot.run("")
